@@ -188,286 +188,287 @@
 </head>
 <body>
   <header>
-    <h1>Simulación Odoo CRM - Gestión de Fronteras</h1>
+      <h1>Simulación Odoo CRM - Gestión de Fronteras</h1>
   </header>
-  
+
   <section id="preview">
-    <h2>Fronteras Registradas</h2>
-    <table id="fronterasTable">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre Comercial</th>
-          <th>Tipo Frontera</th>
-          <th>Ciudad</th>
-          <th>Contacto</th>
-          <th>Tipo Requerimiento</th>
-          <th>Estado en XM</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <button id="btnCrearOdoo">Crear Frontera</button>
+      <h2>Fronteras Registradas</h2>
+      <table id="fronterasTable">
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>Nombre Comercial</th>
+                  <th>Tipo Frontera</th>
+                  <th>Ciudad</th>
+                  <th>Contacto</th>
+                  <th>Tipo Requerimiento</th>
+                  <th>Estado en XM</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody></tbody>
+      </table>
+      <button id="btnCrearOdoo">Crear Frontera</button>
   </section>
-  
+
   <section id="formSectionOdoo" class="hidden">
-    <h2>Crear Nueva Frontera en Odoo</h2>
-    <form id="odooForm">
-      <fieldset>
-        <legend>Requerimiento</legend>
-        <label>Tipo Frontera:
-          <select name="tipoFrontera" required>
-            <option value="">Seleccione...</option>
-            <option value="Tipo regulado">Tipo regulado</option>
-            <option value="Tipo no regulado">Tipo no regulado</option>
-          </select>
-        </label>
-        <label>Requerimiento (7 dígitos):
-          <input type="text" name="requerimiento" pattern="\d{7}" required>
-        </label>
-        <label>Contacto:
-          <input type="text" name="contacto" required>
-        </label>
-        <label>Fecha Solicitud Registro:
-          <input type="date" name="fechaSolicitudRegistro" required>
-        </label>
-        <label>Fecha Posible Registro:
-          <input type="date" name="fechaPosibleRegistro" required>
-        </label>
-        <label>Representante Frontera:
-          <input type="text" name="representanteFrontera" required>
-        </label>
-        <label>Tipo Requerimiento:
-          <select name="tipoRequerimiento" required>
-            <option value="">Seleccione...</option>
-            <option value="Registro nuevo">Registro nuevo</option>
-            <option value="Modificación">Modificación</option>
-          </select>
-        </label>
-      </fieldset>
-      
-      <fieldset>
-        <legend>Frontera</legend>
-        <label>Nombre Frontera Comercial:
-          <input type="text" name="nombreFronteraComercial" required>
-        </label>
-        <label>País:
-          <input type="text" name="pais" value="Colombia" readonly>
-        </label>
-        <label>Departamento:
-          <input type="text" name="departamento" required>
-        </label>
-        <label>Ciudad:
-          <input type="text" name="ciudad" required>
-        </label>
-        <label>Centro Poblado:
-          <input type="text" name="centroPoblado" required>
-        </label>
-        <label>Longitud:
-          <input type="text" name="longitud" required>
-        </label>
-        <label>Latitud:
-          <input type="text" name="latitud" required>
-        </label>
-        <label>Altitud:
-          <input type="text" name="altitud" required>
-        </label>
-        <label>Tipo Modelo:
-          <input type="text" name="tipoModelo" required>
-        </label>
-        <label>Código SIC:
-          <input type="text" name="codigoSic" required>
-        </label>
-        <label>Operador de Red:
-          <input type="text" name="operadorRed" required>
-        </label>
-        <label>Mercado de Comercialización:
-          <input type="text" name="mercadoComercializacion" required>
-        </label>
-        <label>Tensión Punto de Medida:
-          <input type="text" name="tensionPuntoMedida" required>
-        </label>
-        <label>Nivel de Tensión:
-          <input type="text" name="nivelTension" required>
-        </label>
-        <label>Usuario Conectado STN:
-          <select name="usuarioConectadoStn" required>
-            <option value="">Seleccione...</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-          </select>
-        </label>
-      </fieldset>
-      
-      <fieldset>
-        <legend>Usuario</legend>
-        <label>NIT:
-          <input type="text" name="nit" required>
-        </label>
-        <label>Razón Social:
-          <input type="text" name="razonSocial" required>
-        </label>
-        <label>CIIU Tipo:
-          <input type="text" name="ciiuTipo" required>
-        </label>
-        <label>Código CIIU:
-          <input type="text" name="codigoCiiu" required>
-        </label>
-        <label>NIU:
-          <input type="text" name="niu" required>
-        </label>
-      </fieldset>
-      
-      <fieldset>
-        <legend>Equipos de Medida</legend>
-        <label>Número de Serie:
-          <input type="text" name="numeroSerie" required>
-        </label>
-        <label>Es Bidireccional:
-          <select name="esBidireccional" required>
-            <option value="">Seleccione...</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-          </select>
-        </label>
-        <label>Tipo Contador:
-          <input type="text" name="tipoContador" required>
-        </label>
-        <label>Modelo:
-          <input type="text" name="modelo" required>
-        </label>
-        <label>Marca:
-          <input type="text" name="marca" required>
-        </label>
-        <label>Empresa que realizó calibración:
-          <input type="text" name="empresaRealizoCalibracion" required>
-        </label>
-        <label>Número de Elementos Usados:
-          <input type="text" name="numElementosUsados" required>
-        </label>
-        <label>Tipo de Punto de Medición:
-          <input type="text" name="tipoPuntoMedicion" required>
-        </label>
-        <label>Fecha de Calibración:
-          <input type="date" name="fechaCalibracion" required>
-        </label>
-        <label>Clase de Contador:
-          <input type="text" name="claseContador" required>
-        </label>
-        <label>Clase de Transformador Potencial:
-          <input type="text" name="claseTransformadorPotencial" required>
-        </label>
-        <label>Clase de Transformador Corriente:
-          <input type="text" name="claseTransformadorCorriente" required>
-        </label>
-      </fieldset>
-      
-      <fieldset>
-        <legend>Curva Típica</legend>
-        <label>Día:
-          <input type="text" name="dia" required>
-        </label>
-        <label>Periodo:
-          <input type="text" name="periodo" required>
-        </label>
-        <label>Valor:
-          <input type="text" name="valor" required>
-        </label>
-      </fieldset>
-      
-      <fieldset>
-        <legend>Certificaciones</legend>
-        <label>SIC200:
-          <select name="SIC200" required>
-            <option value="">Seleccione...</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-          </select>
-        </label>
-        <label>SIC156:
-          <select name="SIC156" required>
-            <option value="">Seleccione...</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-          </select>
-        </label>
-        <label>SIC157:
-          <select name="SIC157" required>
-            <option value="">Seleccione...</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-          </select>
-        </label>
-        <label>Es Nueva:
-          <select name="esNueva" required>
-            <option value="">Seleccione...</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-          </select>
-        </label>
-        <label>Por Cambio de Ubicación:
-          <select name="esPorCambioDeUbicacion" required>
-            <option value="">Seleccione...</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-          </select>
-        </label>
-        <label>SIC058:
-          <select name="SIC058" required>
-            <option value="">Seleccione...</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-          </select>
-        </label>
-        <label>SIC108:
-          <select name="SIC108" required>
-            <option value="">Seleccione...</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-          </select>
-        </label>
-      </fieldset>
-      
-      <fieldset>
-        <legend>Adjuntos</legend>
-        <label>Certificado Calibración:
-          <input type="text" name="certificadoCalibracion" placeholder="nombreArchivo.pdf" required>
-        </label>
-        <label>Plantilla Equipos de Medida:
-          <input type="text" name="plantillaEquiposMedida" placeholder="nombreArchivo.pdf" required>
-        </label>
-        <label>Paz y Salvo:
-          <input type="text" name="pazYSalvo" placeholder="nombreArchivo.pdf" required>
-        </label>
-      </fieldset>
-      
-      <div class="form-actions">
-        <button type="submit">Guardar en Odoo</button>
-        <button type="button" id="btnCancelarOdoo">Cancelar</button>
-      </div>
-    </form>
+      <h2>Crear Nueva Frontera en Odoo</h2>
+      <form id="odooForm">
+          <fieldset>
+              <legend>Requerimiento</legend>
+              <label>Tipo Frontera:
+                  <select name="tipoFrontera" id="tipoFrontera" required>
+                      <option value="">Seleccione...</option>
+                      <option value="Tipo regulado">Tipo regulado</option>
+                      <option value="Tipo no regulado">Tipo no regulado</option>
+                  </select>
+              </label>
+              <label>Requerimiento (7 dígitos):
+                  <input type="text" name="requerimiento" id="requerimiento" pattern="\d{7}" required>
+              </label>
+              <label>Contacto:
+                  <input type="text" name="contacto" id="contacto" required>
+              </label>
+              <label>Fecha Solicitud Registro:
+                  <input type="date" name="fechaSolicitudRegistro" id="fechaSolicitudRegistro" required>
+              </label>
+              <label>Fecha Posible Registro:
+                  <input type="date" name="fechaPosibleRegistro" id="fechaPosibleRegistro" required>
+              </label>
+              <label>Representante Frontera:
+                  <input type="text" name="representanteFrontera" id="representanteFrontera" required>
+              </label>
+              <label>Tipo Requerimiento:
+                  <select name="tipoRequerimiento" id="tipoRequerimiento" required>
+                      <option value="">Seleccione...</option>
+                      <option value="Registro nuevo">Registro nuevo</option>
+                      <option value="Modificación">Modificación</option>
+                  </select>
+              </label>
+          </fieldset>
+
+          <fieldset>
+              <legend>Frontera</legend>
+              <label>Nombre Frontera Comercial:
+                  <input type="text" name="nombreFronteraComercial" id="nombreFronteraComercial" required>
+              </label>
+              <label>País:
+                  <input type="text" name="pais" id="pais" value="Colombia" readonly>
+              </label>
+              <label>Departamento:
+                  <input type="text" name="departamento" id="departamento" required>
+              </label>
+              <label>Ciudad:
+                  <input type="text" name="ciudad" id="ciudad" required>
+              </label>
+              <label>Centro Poblado:
+                  <input type="text" name="centroPoblado" id="centroPoblado" required>
+              </label>
+              <label>Longitud:
+                  <input type="text" name="longitud" id="longitud" required>
+              </label>
+              <label>Latitud:
+                  <input type="text" name="latitud" id="latitud" required>
+              </label>
+              <label>Altitud:
+                  <input type="text" name="altitud" id="altitud" required>
+              </label>
+              <label>Tipo Modelo:
+                  <input type="text" name="tipoModelo" id="tipoModelo" required>
+              </label>
+              <label>Código SIC:
+                  <input type="text" name="codigoSic" id="codigoSic" required>
+              </label>
+              <label>Operador de Red:
+                  <input type="text" name="operadorRed" id="operadorRed" required>
+              </label>
+              <label>Mercado de Comercialización:
+                  <input type="text" name="mercadoComercializacion" id="mercadoComercializacion" required>
+              </label>
+              <label>Tensión Punto de Medida:
+                  <input type="text" name="tensionPuntoMedida" id="tensionPuntoMedida" required>
+              </label>
+              <label>Nivel de Tensión:
+                  <input type="text" name="nivelTension" id="nivelTension" required>
+              </label>
+              <label>Usuario Conectado STN:
+                  <select name="usuarioConectadoStn" id="usuarioConectadoStn" required>
+                      <option value="">Seleccione...</option>
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
+                  </select>
+              </label>
+          </fieldset>
+
+          <fieldset>
+              <legend>Usuario</legend>
+              <label>NIT:
+                  <input type="text" name="nit" id="nit" required>
+              </label>
+              <label>Razón Social:
+                  <input type="text" name="razonSocial" id="razonSocial" required>
+              </label>
+              <label>CIIU Tipo:
+                  <input type="text" name="ciiuTipo" id="ciiuTipo" required>
+              </label>
+              <label>Código CIIU:
+                  <input type="text" name="codigoCiiu" id="codigoCiiu" required>
+              </label>
+              <label>NIU:
+                  <input type="text" name="niu" id="niu" required>
+              </label>
+          </fieldset>
+
+          <fieldset>
+              <legend>Equipos de Medida</legend>
+              <label>Número de Serie:
+                  <input type="text" name="numeroSerie" id="numeroSerie" required>
+              </label>
+              <label>Es Bidireccional:
+                  <select name="esBidireccional" id="esBidireccional" required>
+                      <option value="">Seleccione...</option>
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
+                  </select>
+              </label>
+              <label>Tipo Contador:
+                  <input type="text" name="tipoContador" id="tipoContador" required>
+              </label>
+              <label>Modelo:
+                  <input type="text" name="modelo" id="modelo" required>
+              </label>
+              <label>Marca:
+                  <input type="text" name="marca" id="marca" required>
+              </label>
+              <label>Empresa que realizó calibración:
+                  <input type="text" name="empresaRealizoCalibracion" id="empresaRealizoCalibracion" required>
+              </label>
+              <label>Número de Elementos Usados:
+                  <input type="text" name="numElementosUsados" id="numElementosUsados" required>
+              </label>
+              <label>Tipo de Punto de Medición:
+                  <input type="text" name="tipoPuntoMedicion" id="tipoPuntoMedicion" required>
+              </label>
+              <label>Fecha de Calibración:
+                  <input type="date" name="fechaCalibracion" id="fechaCalibracion" required>
+              </label>
+              <label>Clase de Contador:
+                  <input type="text" name="claseContador" id="claseContador" required>
+              </label>
+              <label>Clase de Transformador Potencial:
+                  <input type="text" name="claseTransformadorPotencial" id="claseTransformadorPotencial" required>
+              </label>
+              <label>Clase de Transformador Corriente:
+                  <input type="text" name="claseTransformadorCorriente" id="claseTransformadorCorriente" required>
+              </label>
+          </fieldset>
+
+          <fieldset>
+              <legend>Curva Típica</legend>
+              <label>Día:
+                  <input type="text" name="dia" id="dia" required>
+              </label>
+              <label>Periodo:
+                  <input type="text" name="periodo" id="periodo" required>
+              </label>
+              <label>Valor:
+                  <input type="text" name="valor" id="valor" required>
+              </label>
+          </fieldset>
+
+          <fieldset>
+              <legend>Certificaciones</legend>
+              <label>SIC200:
+                  <select name="SIC200" id="SIC200" required>
+                      <option value="">Seleccione...</option>
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
+                  </select>
+              </label>
+              <label>SIC156:
+                  <select name="SIC156" id="SIC156" required>
+                      <option value="">Seleccione...</option>
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
+                  </select>
+              </label>
+              <label>SIC157:
+                  <select name="SIC157" id="SIC157" required>
+                      <option value="">Seleccione...</option>
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
+                  </select>
+              </label>
+              <label>Es Nueva:
+                  <select name="esNueva" id="esNueva" required>
+                      <option value="">Seleccione...</option>
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
+                  </select>
+              </label>
+              <label>Por Cambio de Ubicación:
+                  <select name="esPorCambioDeUbicacion" id="esPorCambioDeUbicacion" required>
+                      <option value="">Seleccione...</option>
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
+                  </select>
+              </label>
+              <label>SIC058:
+                  <select name="SIC058" id="SIC058" required>
+                      <option value="">Seleccione...</option>
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
+                  </select>
+              </label>
+              <label>SIC108:
+                  <select name="SIC108" id="SIC108" required>
+                      <option value="">Seleccione...</option>
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
+                  </select>
+              </label>
+          </fieldset>
+
+          <fieldset>
+              <legend>Adjuntos</legend>
+              <label>Certificado Calibración:
+                  <input type="text" name="certificadoCalibracion" id="certificadoCalibracion" placeholder="nombreArchivo.pdf" required>
+              </label>
+              <label>Plantilla Equipos de Medida:
+                  <input type="text" name="plantillaEquiposMedida" id="plantillaEquiposMedida" placeholder="nombreArchivo.pdf" required>
+              </label>
+              <label>Paz y Salvo:
+                  <input type="text" name="pazYSalvo" id="pazYSalvo" placeholder="nombreArchivo.pdf" required>
+              </label>
+          </fieldset>
+
+          <div class="form-actions">
+              <button type="submit">Guardar en Odoo</button>
+              <button type="button" id="btnCancelarOdoo">Cancelar</button>
+          </div>
+      </form>
   </section>
-  
+
   <section id="loginXM" class="hidden">
-    <h2>Inicio de sesión XM</h2>
-    <form id="loginForm">
-      <fieldset>
-        <legend>Credenciales</legend>
-        <label>Usuario:
-          <input type="text" name="username" value="usuarioDemo" required>
-        </label>
-        <label>Contraseña:
-          <input type="password" name="password" value="passwordDemo" required>
-        </label>
-      </fieldset>
-      <div class="form-actions">
-        <button type="submit">Acceder</button>
-      </div>
-    </form>
+      <h2>Inicio de sesión XM</h2>
+      <form id="loginForm">
+          <fieldset>
+              <legend>Credenciales</legend>
+              <label>Usuario:
+                  <input type="text" name="username" id="username" value="usuarioDemo" required>
+              </label>
+              <label>Contraseña:
+                  <input type="password" name="password" id="password" value="passwordDemo" required>
+              </label>
+          </fieldset>
+          <div class="form-actions">
+              <button type="submit">Acceder</button>
+          </div>
+      </form>
   </section>
-  
+
   <div id="toast">Notificación</div>
+</body>
   
   <script>
     let fronteras = [];
