@@ -3,19 +3,652 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Listado de Fronteras - Simulación Odoo</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Simulación Odoo CRM - Fronteras</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+    
+    header {
+      background-color: #875A7B;
+      padding: 20px;
+      border-radius: 5px 5px 0 0;
+    }
+    
+    h1, h2 {
+      margin-bottom: 15px;
+    }
+    
+    section {
+      background-color: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+    }
+    
+    table th, table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    table th {
+      background-color: #f9f9f9;
+    }
+    
+    button {
+      background-color: #875A7B;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #68465e;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    @media (max-width: 768px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    fieldset {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+    }
+    
+    legend {
+      font-weight: bold;
+      padding: 0 10px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      margin-top: 5px;
+    }
+    
+    .form-actions {
+      grid-column: span 2;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    
+    @media (max-width: 768px) {
+      .form-actions {
+        grid-column: span 1;
+      }
+    }
+    
+    .status-pending {
+      color: #ff9800;
+      font-weight: bold;
+    }
+    
+    .status-completed {
+      color: #4caf50;
+      font-weight: bold;
+    }
+    
+    .status-error {
+      color: #f44336;
+      font-weight: bold;
+    }
+    
+    .status-badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    
+    .status-badge.pending {
+      background-color: #fff3e0;
+      color: #ff9800;
+    }
+    
+    .status-badge.completed {
+      background-color: #e8f5e9;
+      color: #4caf50;
+    }
+    
+    .status-badge.error {
+      background-color: #ffebee;
+      color: #f44336;
+    }
+    
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      margin-left: -125px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 2px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      bottom: 30px;
+    }
+    
+    #toast.show {
+      visibility: visible;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+    
+    @keyframes fadein {
+      from {bottom: 0; opacity: 0;}
+      to {bottom: 30px; opacity: 1;}
+    }
+    
+    @keyframes fadeout {
+      from {bottom: 30px; opacity: 1;}
+      to {bottom: 0; opacity: 0;}
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Listado de Fronteras</h1>
+    <h1>Simulación Odoo CRM - Gestión de Fronteras</h1>
   </header>
-  <main>
-    <div id="contenedorFronteras"></div>
-  </main>
-  <footer>
-    <p>&copy; 2023 Simulación Odoo - Plataforma XM</p>
-  </footer>
-  <script src="./main.js"></script>
+  
+  <section id="preview">
+    <h2>Fronteras Registradas</h2>
+    <table id="fronterasTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre Comercial</th>
+          <th>Tipo Frontera</th>
+          <th>Ciudad</th>
+          <th>Contacto</th>
+          <th>Tipo Requerimiento</th>
+          <th>Estado en XM</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="btnCrearOdoo">Crear Frontera</button>
+  </section>
+  
+  <section id="formSectionOdoo" class="hidden">
+    <h2>Crear Nueva Frontera en Odoo</h2>
+    <form id="odooForm">
+      <fieldset>
+        <legend>Requerimiento</legend>
+        <label>Tipo Frontera:
+          <select name="tipoFrontera" required>
+            <option value="">Seleccione...</option>
+            <option value="Tipo regulado">Tipo regulado</option>
+            <option value="Tipo no regulado">Tipo no regulado</option>
+          </select>
+        </label>
+        <label>Requerimiento (7 dígitos):
+          <input type="text" name="requerimiento" pattern="\d{7}" required>
+        </label>
+        <label>Contacto:
+          <input type="text" name="contacto" required>
+        </label>
+        <label>Fecha Solicitud Registro:
+          <input type="date" name="fechaSolicitudRegistro" required>
+        </label>
+        <label>Fecha Posible Registro:
+          <input type="date" name="fechaPosibleRegistro" required>
+        </label>
+        <label>Representante Frontera:
+          <input type="text" name="representanteFrontera" required>
+        </label>
+        <label>Tipo Requerimiento:
+          <select name="tipoRequerimiento" required>
+            <option value="">Seleccione...</option>
+            <option value="Registro nuevo">Registro nuevo</option>
+            <option value="Modificación">Modificación</option>
+          </select>
+        </label>
+      </fieldset>
+      
+      <fieldset>
+        <legend>Frontera</legend>
+        <label>Nombre Frontera Comercial:
+          <input type="text" name="nombreFronteraComercial" required>
+        </label>
+        <label>País:
+          <input type="text" name="pais" value="Colombia" readonly>
+        </label>
+        <label>Departamento:
+          <input type="text" name="departamento" required>
+        </label>
+        <label>Ciudad:
+          <input type="text" name="ciudad" required>
+        </label>
+        <label>Centro Poblado:
+          <input type="text" name="centroPoblado" required>
+        </label>
+        <label>Longitud:
+          <input type="text" name="longitud" required>
+        </label>
+        <label>Latitud:
+          <input type="text" name="latitud" required>
+        </label>
+        <label>Altitud:
+          <input type="text" name="altitud" required>
+        </label>
+        <label>Tipo Modelo:
+          <input type="text" name="tipoModelo" required>
+        </label>
+        <label>Código SIC:
+          <input type="text" name="codigoSic" required>
+        </label>
+        <label>Operador de Red:
+          <input type="text" name="operadorRed" required>
+        </label>
+        <label>Mercado de Comercialización:
+          <input type="text" name="mercadoComercializacion" required>
+        </label>
+        <label>Tensión Punto de Medida:
+          <input type="text" name="tensionPuntoMedida" required>
+        </label>
+        <label>Nivel de Tensión:
+          <input type="text" name="nivelTension" required>
+        </label>
+        <label>Usuario Conectado STN:
+          <select name="usuarioConectadoStn" required>
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+      </fieldset>
+      
+      <fieldset>
+        <legend>Usuario</legend>
+        <label>NIT:
+          <input type="text" name="nit" required>
+        </label>
+        <label>Razón Social:
+          <input type="text" name="razonSocial" required>
+        </label>
+        <label>CIIU Tipo:
+          <input type="text" name="ciiuTipo" required>
+        </label>
+        <label>Código CIIU:
+          <input type="text" name="codigoCiiu" required>
+        </label>
+        <label>NIU:
+          <input type="text" name="niu" required>
+        </label>
+      </fieldset>
+      
+      <fieldset>
+        <legend>Equipos de Medida</legend>
+        <label>Número de Serie:
+          <input type="text" name="numeroSerie" required>
+        </label>
+        <label>Es Bidireccional:
+          <select name="esBidireccional" required>
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+        <label>Tipo Contador:
+          <input type="text" name="tipoContador" required>
+        </label>
+        <label>Modelo:
+          <input type="text" name="modelo" required>
+        </label>
+        <label>Marca:
+          <input type="text" name="marca" required>
+        </label>
+        <label>Empresa que realizó calibración:
+          <input type="text" name="empresaRealizoCalibracion" required>
+        </label>
+        <label>Número de Elementos Usados:
+          <input type="text" name="numElementosUsados" required>
+        </label>
+        <label>Tipo de Punto de Medición:
+          <input type="text" name="tipoPuntoMedicion" required>
+        </label>
+        <label>Fecha de Calibración:
+          <input type="date" name="fechaCalibracion" required>
+        </label>
+        <label>Clase de Contador:
+          <input type="text" name="claseContador" required>
+        </label>
+        <label>Clase de Transformador Potencial:
+          <input type="text" name="claseTransformadorPotencial" required>
+        </label>
+        <label>Clase de Transformador Corriente:
+          <input type="text" name="claseTransformadorCorriente" required>
+        </label>
+      </fieldset>
+      
+      <fieldset>
+        <legend>Curva Típica</legend>
+        <label>Día:
+          <input type="text" name="dia" required>
+        </label>
+        <label>Periodo:
+          <input type="text" name="periodo" required>
+        </label>
+        <label>Valor:
+          <input type="text" name="valor" required>
+        </label>
+      </fieldset>
+      
+      <fieldset>
+        <legend>Certificaciones</legend>
+        <label>SIC200:
+          <select name="SIC200" required>
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+        <label>SIC156:
+          <select name="SIC156" required>
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+        <label>SIC157:
+          <select name="SIC157" required>
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+        <label>Es Nueva:
+          <select name="esNueva" required>
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+        <label>Por Cambio de Ubicación:
+          <select name="esPorCambioDeUbicacion" required>
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+        <label>SIC058:
+          <select name="SIC058" required>
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+        <label>SIC108:
+          <select name="SIC108" required>
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+      </fieldset>
+      
+      <fieldset>
+        <legend>Adjuntos</legend>
+        <label>Certificado Calibración:
+          <input type="text" name="certificadoCalibracion" placeholder="nombreArchivo.pdf" required>
+        </label>
+        <label>Plantilla Equipos de Medida:
+          <input type="text" name="plantillaEquiposMedida" placeholder="nombreArchivo.pdf" required>
+        </label>
+        <label>Paz y Salvo:
+          <input type="text" name="pazYSalvo" placeholder="nombreArchivo.pdf" required>
+        </label>
+      </fieldset>
+      
+      <div class="form-actions">
+        <button type="submit">Guardar en Odoo</button>
+        <button type="button" id="btnCancelarOdoo">Cancelar</button>
+      </div>
+    </form>
+  </section>
+  
+  <section id="loginXM" class="hidden">
+    <h2>Inicio de sesión XM</h2>
+    <form id="loginForm">
+      <fieldset>
+        <legend>Credenciales</legend>
+        <label>Usuario:
+          <input type="text" name="username" value="usuarioDemo" required>
+        </label>
+        <label>Contraseña:
+          <input type="password" name="password" value="passwordDemo" required>
+        </label>
+      </fieldset>
+      <div class="form-actions">
+        <button type="submit">Acceder</button>
+      </div>
+    </form>
+  </section>
+  
+  <div id="toast">Notificación</div>
+  
+  <script>
+    let fronteras = [];
+    let fronteraIdCounter = 1;
+    
+    const fronterasTable = document.getElementById('fronterasTable');
+    const btnCrearOdoo = document.getElementById('btnCrearOdoo');
+    const btnCancelarOdoo = document.getElementById('btnCancelarOdoo');
+    const formSectionOdoo = document.getElementById('formSectionOdoo');
+    const odooForm = document.getElementById('odooForm');
+    const loginXM = document.getElementById('loginXM');
+    const loginForm = document.getElementById('loginForm');
+    const toast = document.getElementById('toast');
+    
+    btnCrearOdoo.addEventListener('click', mostrarFormularioOdoo);
+    btnCancelarOdoo.addEventListener('click', ocultarFormularioOdoo);
+    odooForm.addEventListener('submit', guardarFronteraOdoo);
+    loginForm.addEventListener('submit', iniciarSesionXM);
+    
+    function mostrarFormularioOdoo() {
+      formSectionOdoo.classList.remove('hidden');
+    }
+    
+    function ocultarFormularioOdoo() {
+      formSectionOdoo.classList.add('hidden');
+      odooForm.reset();
+    }
+    
+    function guardarFronteraOdoo(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(odooForm);
+      const fronteraData = {
+        id: fronteraIdCounter++,
+        tipoFrontera: formData.get('tipoFrontera'),
+        requerimiento: formData.get('requerimiento'),
+        contacto: formData.get('contacto'),
+        fechaSolicitudRegistro: formData.get('fechaSolicitudRegistro'),
+        fechaPosibleRegistro: formData.get('fechaPosibleRegistro'),
+        representanteFrontera: formData.get('representanteFrontera'),
+        tipoRequerimiento: formData.get('tipoRequerimiento'),
+        nombreFronteraComercial: formData.get('nombreFronteraComercial'),
+        pais: formData.get('pais'),
+        departamento: formData.get('departamento'),
+        ciudad: formData.get('ciudad'),
+        centroPoblado: formData.get('centroPoblado'),
+        longitud: formData.get('longitud'),
+        latitud: formData.get('latitud'),
+        altitud: formData.get('altitud'),
+        tipoModelo: formData.get('tipoModelo'),
+        codigoSic: formData.get('codigoSic'),
+        operadorRed: formData.get('operadorRed'),
+        mercadoComercializacion: formData.get('mercadoComercializacion'),
+        tensionPuntoMedida: formData.get('tensionPuntoMedida'),
+        nivelTension: formData.get('nivelTension'),
+        usuarioConectadoStn: formData.get('usuarioConectadoStn'),
+        nit: formData.get('nit'),
+        razonSocial: formData.get('razonSocial'),
+        ciiuTipo: formData.get('ciiuTipo'),
+        codigoCiiu: formData.get('codigoCiiu'),
+        niu: formData.get('niu'),
+        numeroSerie: formData.get('numeroSerie'),
+        esBidireccional: formData.get('esBidireccional'),
+        tipoContador: formData.get('tipoContador'),
+        modelo: formData.get('modelo'),
+        marca: formData.get('marca'),
+        empresaRealizoCalibracion: formData.get('empresaRealizoCalibracion'),
+        numElementosUsados: formData.get('numElementosUsados'),
+        tipoPuntoMedicion: formData.get('tipoPuntoMedicion'),
+        fechaCalibracion: formData.get('fechaCalibracion'),
+        claseContador: formData.get('claseContador'),
+        claseTransformadorPotencial: formData.get('claseTransformadorPotencial'),
+        claseTransformadorCorriente: formData.get('claseTransformadorCorriente'),
+        dia: formData.get('dia'),
+        periodo: formData.get('periodo'),
+        valor: formData.get('valor'),
+        SIC200: formData.get('SIC200'),
+        SIC156: formData.get('SIC156'),
+        SIC157: formData.get('SIC157'),
+        esNueva: formData.get('esNueva'),
+        esPorCambioDeUbicacion: formData.get('esPorCambioDeUbicacion'),
+        SIC058: formData.get('SIC058'),
+        SIC108: formData.get('SIC108'),
+        certificadoCalibracion: formData.get('certificadoCalibracion'),
+        plantillaEquiposMedida: formData.get('plantillaEquiposMedida'),
+        pazYSalvo: formData.get('pazYSalvo'),
+        estadoXM: 'Pendiente'
+      };
+      
+      fronteras.push(fronteraData);
+      actualizarTablaFronteras();
+      ocultarFormularioOdoo();
+      mostrarToast('Frontera guardada en Odoo exitosamente');
+      
+      enviarDatosAlBackend(fronteraData);
+    }
+    
+    function enviarDatosAlBackend(fronteraData) {
+      console.log('Enviando datos al backend para la frontera:', fronteraData.id);
+      mostrarToast('Iniciando proceso de automatización para crear en XM...');
+      
+
+      setTimeout(() => {
+        const exito = Math.random() > 0.2; //exito al 80&
+        
+        if (exito) {
+          const fronteraIndex = fronteras.findIndex(f => f.id === fronteraData.id);
+          if (fronteraIndex !== -1) {
+            fronteras[fronteraIndex].estadoXM = 'Completado';
+            actualizarTablaFronteras();
+            mostrarToast('Frontera creada exitosamente en XM');
+          }
+        } else {
+          const fronteraIndex = fronteras.findIndex(f => f.id === fronteraData.id);
+          if (fronteraIndex !== -1) {
+            fronteras[fronteraIndex].estadoXM = 'Error';
+            actualizarTablaFronteras();
+            mostrarToast('Error al crear frontera en XM. Reintentando...');
+            
+            setTimeout(() => {
+              fronteras[fronteraIndex].estadoXM = 'Completado';
+              actualizarTablaFronteras();
+              mostrarToast('Frontera creada exitosamente en XM después de reintento');
+            }, 3000);
+          }
+        }
+      }, 2000);
+    }
+    
+    function iniciarSesionXM(event) {
+      event.preventDefault();
+      loginXM.classList.add('hidden');
+      mostrarToast('Sesión iniciada en XM');
+    }
+    
+    function actualizarTablaFronteras() {
+      const tbody = fronterasTable.querySelector('tbody');
+      tbody.innerHTML = '';
+      
+      fronteras.forEach(frontera => {
+        const tr = document.createElement('tr');
+        
+        const estadoClass = frontera.estadoXM === 'Completado' ? 'completed' : 
+                           frontera.estadoXM === 'Error' ? 'error' : 'pending';
+        
+        tr.innerHTML = `
+          <td>${frontera.id}</td>
+          <td>${frontera.nombreFronteraComercial}</td>
+          <td>${frontera.tipoFrontera}</td>
+          <td>${frontera.ciudad}</td>
+          <td>${frontera.contacto}</td>
+          <td>${frontera.tipoRequerimiento}</td>
+          <td><span class="status-badge ${estadoClass}">${frontera.estadoXM}</span></td>
+          <td>
+            <button class="btnReenviar" data-id="${frontera.id}" ${frontera.estadoXM === 'Completado' ? 'disabled' : ''}>
+              ${frontera.estadoXM === 'Error' ? 'Reintentar' : 'Enviar a XM'}
+            </button>
+          </td>
+        `;
+        
+        tbody.appendChild(tr);
+      });
+      
+      document.querySelectorAll('.btnReenviar').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const fronteraId = parseInt(btn.getAttribute('data-id'));
+          const frontera = fronteras.find(f => f.id === fronteraId);
+          if (frontera) {
+            enviarDatosAlBackend(frontera);
+          }
+        });
+      });
+    }
+    
+    function mostrarToast(mensaje) {
+      toast.textContent = mensaje;
+      toast.className = "show";
+      setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+    }
+    
+    actualizarTablaFronteras();
+  </script>
 </body>
 </html>
